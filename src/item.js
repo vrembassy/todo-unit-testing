@@ -11,62 +11,13 @@
   "use strict";
 
   var STATUS_COMPLETE = 'mark_complete';
-
-  //utility functions 
-  function $createEl(tagName) {
-    return document.createElement("li");
-  }
-
-
-  function $removeEl($el) {
-    var parent = $el.parentNode;
-    if (parent) parent.removeChild($el);
-  }
-
-  window.qsa = function (selector, scope) {
-		return (scope || document).querySelectorAll(selector);
-	};
-
-  function $on(target, type, callback, useCapture) {
-    target.addEventListener(type, callback, !!useCapture);
-  }
-
-  function $delegate(target, selector, type, handler) {
-		function dispatchEvent(event) {
-			var targetElement = event.target;
-			var potentialElements = window.qsa(selector, target);
-			var hasMatch = Array.prototype.indexOf.call(potentialElements, targetElement) >= 0;
-
-			if (hasMatch) {
-				handler.call(targetElement, event);
-			}
-		}
-
-		// https://developer.mozilla.org/en-US/docs/Web/Events/blur
-		var useCapture = type === 'blur' || type === 'focus';
-
-		$on(target, type, dispatchEvent, useCapture);
-  };
-  
-  function $off() { 
-    //TBD: 
-  }
-
-  function $classNameAdd(el, className){
-    el.classList.add(className);
-  }
-
-  function $classNameRemove(el, className){
-    el.classList.remove(className);
-  }
-      
-
+ 
   // create the object 
   function Item(todo) { 
 
-    //handle exception
+    //TBD: handle exception
     if (!todo) {
-      //TBD:
+
     }
 
     // object initialization
@@ -114,7 +65,9 @@
     remove: function(){ 
       // TBD: alert
 
-      // TBD: remove the event handlers registered for this el
+      //remove the event handlers
+      $off(this.$el, this._handleComplete);
+      $off(this.$el, this._handleRemove);
 
       // remove this element from DOM 
       $removeEl(this.$el);
@@ -123,14 +76,12 @@
       return this;
     },
   
-    _handleComplete: function(e, d) {
+    _handleComplete: function(e) {
       //e.preventDefault();
-      console.log("_handleComplete", e, d);
       this.setCompletionStatus(!this.todo.status);
     },
 
-    _handleRemove: function(e, d) {
-      console.log("_handleRemove", e, d);
+    _handleRemove: function(e) {
       this.remove();
     }
   };

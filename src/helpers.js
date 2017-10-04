@@ -10,11 +10,32 @@
 		return (scope || document).querySelectorAll(selector);
 	};
 
+	window.$createEl = function (tagName) {
+    	return document.createElement("li");
+  	}
+
+	window.$removeEl = function($el) {
+		var parent = $el.parentNode;
+		if (parent) parent.removeChild($el);
+	}  
+
+	window.$classNameAdd = function(el, className){
+    	el.classList.add(className);
+  	}
+
+  	window.$classNameRemove = function(el, className){
+    	el.classList.remove(className);
+  	}
+
 	// addEventListener wrapper:
 	window.$on = function (target, type, callback, useCapture) {
 		target.addEventListener(type, callback, !!useCapture);
 	};
 
+	window.$off = function (target, type, callback) {
+		target.removeEventListener(type, callback);
+	};
+	
 	// Attach a handler to event for all elements that match the selector,
 	// now or in the future, based on a root element
 	window.$delegate = function (target, selector, type, handler) {
